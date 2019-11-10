@@ -24,8 +24,14 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    MIF Files
                 </a>
+                <div class="navbar-brand">|</div>
+                <div id="main-menu" class="d-flex navbar-brand">
+                    <a href="#" class="mr-2 text-info">
+                        Find Files
+                    </a>
+                </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -60,6 +66,17 @@
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
+                                    @if( Auth::user()->role == 'A' )
+                                        <a href="{{ route('admin') }}" class="dropdown-item">
+                                            Admin Panel
+                                        </a>
+                                    @endif
+
+                                    @if( Auth::user()->role == 'M' )
+                                        <a href="{{ route('moderator') }}" class="dropdown-item">
+                                            Moderator Panel
+                                        </a>
+                                    @endif
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
@@ -71,7 +88,22 @@
                 </div>
             </div>
         </nav>
-
+        @if(Session::has('success'))
+            @foreach (Session::get('success') as $success)
+                <div class="alert alert-success alert-bordered alert-dismissible fade show" role="alert">
+                    <button class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    {{ $success }}
+                </div>
+            @endforeach
+        @endif
+        @if(Session::has('error'))
+            @foreach (Session::get('error') as $error)
+                <div class="alert alert-danger alert-bordered alert-dismissible fade show" role="alert">
+                    <button class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    {{ $error }}
+                </div>
+            @endforeach
+        @endif
         <main class="py-4">
             @yield('content')
         </main>

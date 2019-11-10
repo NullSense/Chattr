@@ -11,10 +11,18 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/', 'HomeController@index')->name('home');
+    Route::get('/admin', 'AdminController@renderAdminView')->name('admin');
+
+    Route::group(['prefix' => 'admin'], function () {
+        Route::post('/addUniversity', 'AdminController@addNewUniversity');
+        Route::post('/addFaculty', 'AdminController@addNewFaculty');
+        Route::post('/addStudies', 'AdminController@addNewStudies');
+    });
+
+    Route::get('/moderator', 'ModeratorController@rendeModeratorView')->name('moderator');
+    Route::get('/user/{id}', 'AdminController@renderUserView');
+});
