@@ -10,4 +10,9 @@ class Curriculum extends Model
     {
         return $this->belongsTo(\App\Studies::class, 'id', 'studies');
     }
+
+    public function document()
+    {
+        return $this->hasMany(\App\Document::class, 'id', 'curriculum');
+    }
 }

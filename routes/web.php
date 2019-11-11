@@ -15,14 +15,22 @@ Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/', 'HomeController@index')->name('home');
-    Route::get('/admin', 'AdminController@renderAdminView')->name('admin');
 
     Route::group(['prefix' => 'admin'], function () {
+        Route::get('/', 'AdminController@renderAdminView')->name('admin');
         Route::post('/addUniversity', 'AdminController@addNewUniversity');
         Route::post('/addFaculty', 'AdminController@addNewFaculty');
         Route::post('/addStudies', 'AdminController@addNewStudies');
+        Route::post('/addCurriculum', 'AdminController@addNewCurriculum');
     });
 
     Route::get('/moderator', 'ModeratorController@rendeModeratorView')->name('moderator');
     Route::get('/user/{id}', 'AdminController@renderUserView');
+    Route::get('/upload', 'UploadController@renderUploadView')->name('upload');
+    Route::post('/upload', 'UploadController@uploadDocument');
+
+    Route::group(['prefix' => 'document'], function () {
+        Route::get('/{id}', 'DocumentController@downloadDocument');
+        Route::get('/delete/{id}', 'DocumentController@deleteDocument');
+    });
 });

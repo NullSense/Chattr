@@ -8,9 +8,9 @@ class Studies extends Model
 {
     protected $table = 'studies';
 
-    public function faculty()
+    public function getFaculty()
     {
-        return $this->belongsTo(\App\Faculty::class, 'id', 'faculty');
+        return $this->belongsTo(\App\Faculty::class, 'faculty', 'id');
     }
 
     public function curriculum()

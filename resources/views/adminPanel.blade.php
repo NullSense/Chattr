@@ -24,6 +24,28 @@
                 </table>
             </div>
             <div class="card my-2">
+                <div class="card-header">Add Curriculum</div>
+                <form action="admin/addCurriculum" method="POST" class="form-group">
+                    @csrf
+                    <div class="form-group m-2">
+                        <input class="form-control my-1" type="text" name="name" id="curriculum-name" placeholder="Curriculum Name">
+                        <select class="form-control my-1" name="studies" id="studies-name">
+                            @foreach ($studies ?? '' as $studie)
+                                <option value="{{ $studie->id }}">{{ $studie->name }} | {{ $studie->getFaculty->name }} | {{ $studie->getFaculty->getUniversity->name }}</option>
+                            @endforeach
+                        </select>
+                        <label for="year" class="mt-1">Year:</label>
+                        <select name="year" id="" class="form-control mb-1">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                        <input class="form-control my-1 btn btn-dark text-white" type="submit" value="Submit">
+                    </div>
+                </form>
+            </div>
+            <div class="card my-2">
                 <div class="card-header">Add Studies</div>
                 <form action="admin/addStudies" method="POST" class="form-group">
                     @csrf
@@ -69,12 +91,6 @@
         </div>
         <div class="col-md-8">
             <div class="card my-2">
-                <div class="card-header">Recent Uploads</div>
-                <div>
-
-                </div>
-            </div>
-            <div class="card my-2">
                 <div class="card-header">List of Studies</div>
                 <div>
                     <table class="table table-striped my-2">
@@ -83,6 +99,7 @@
                                 <th>{{ $faculty->id }}</th>
                                 <th>{{ $faculty->getUniversity->name }}</th>
                                 <th>{{ $faculty->name }}</th>
+                                <th>&nbsp;</th>
                             </thead>
                             <tbody>
                                 @foreach ($faculty->getStudies as $studies)
@@ -90,13 +107,53 @@
                                         <td></td>
                                         <td>{{ $studies->id }}</td>
                                         <td>{{ $studies->name }}</td>
+                                        <td>Year</td>
                                     </tr>
+                                    @foreach ($studies->curriculum as $curriculum)
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>{{ $curriculum->name }}</td>
+                                            <td>{{ $curriculum->year }}</td>
+                                        </tr>
+                                    @endforeach
                                 @endforeach
                             </tbody>
                         @endforeach
                     </table>
                 </div>
             </div>
+            <div class="card my-2">
+                    <div class="card-header">Recent Uploads</div>
+                    <div>
+                        <table class="table table-striped">
+                            <thead class="thead-dark">
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>User</th>
+                                <th>Type</th>
+                                <th>&nbsp;</th>
+                                <th>&nbsp;</th>
+                            </thead>
+                            <tbody>
+                                @foreach ($documents as $doc)
+                                    <tr>
+                                        <th>{{ $doc->id }}</th>
+                                        <th>{{ $doc->name }}</th>
+                                        <th>{{ $doc->user_id ?? '-' }}</th>
+                                        <th>{{ $doc->type }}</th>
+                                        <th>
+                                            <a href="/document/{{ $doc->id }}" class="btn btn-pill btn-primary float-right">Download</a>
+                                        </th>
+                                        <th>
+                                            <a href="/document/delete/{{ $doc->id }}" class="btn btn-pill btn-danger float-right">Delete</a>
+                                        </th>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
         </div>
     </div>
 </div>

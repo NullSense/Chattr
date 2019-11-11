@@ -78,6 +78,10 @@
                                         </a>
                                     @endif
 
+                                    <a href="{{ route('upload') }}" class="dropdown-item">
+                                        Upload
+                                    </a>
+
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
