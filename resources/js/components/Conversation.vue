@@ -1,0 +1,53 @@
+<template>
+    <div class="conversation">
+        <ContactBar :contact="contact"/>
+        <MessageList :contact="contact" :messages="messages"/>
+        <MessageComposer @send="sendMessage"/>
+    </div>
+</template>
+
+<script>
+    import ContactBar from "./ContactBar";
+    import MessageList from "./MessageList";
+    import MessageComposer from "./MessageComposer";
+
+    export default {
+        name: "Conversation",
+        props: {
+            contact: {
+                type: Object,
+                default: null
+            },
+            messages: {
+                type: Array,
+                default: []
+            }
+        },
+        methods: {
+            sendMessage(body) {
+                if (!this.contact) {
+                    return;
+                }
+
+                axios.post('/messages', {
+                    to: this.contact.id,
+                    body: body
+                }).then((response) => {
+                    this.$emit('new', response.data)
+                }).catch(error => {
+                    console.log(error.response)
+                })
+            }
+        },
+        components: {ContactBar, MessageList, MessageComposer}
+    }
+</script>
+
+<style lang="scss" scoped>
+    .conversation {
+        flex: 6;
+        display: flex;
+        flex-direction: column;
+    }
+</style>
+
