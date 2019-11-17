@@ -50,7 +50,7 @@ return [
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'chattrdatabase'),
             'username' => env('DB_USERNAME', 'chattrusername'),
-            'password' => env('DB_PASSWORD', 'chattrpassword'),
+            'password' => env('DB_PASSWORD', 'chattrpassword1'),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
