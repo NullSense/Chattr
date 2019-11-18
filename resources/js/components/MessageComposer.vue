@@ -47,6 +47,11 @@
             margin: 0 10px;
         }
 
+        textarea::placeholder {
+            text-align: left;
+            line-height: 1em;
+        }
+
         button {
             border-radius: 15px;
         }
