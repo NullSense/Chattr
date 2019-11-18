@@ -6,10 +6,10 @@ use App\Message;
 use Faker\Generator as Faker;
 
 $factory->define(Message::class, function (Faker $faker) {
-    // generate messages for 5 users
-    $user_id = rand(0, 5);
+    // generate messages for 5 users (arbitrary)
+    $user_id = $faker->numberBetween(0, User::count());
     do {
-        $to = rand(0, 5);
+        $to = $faker->numberBetween(0, User::count());
     } while ($user_id == $to);
 
     return [
