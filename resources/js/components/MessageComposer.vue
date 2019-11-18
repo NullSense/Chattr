@@ -41,15 +41,19 @@
 
         textarea {
             width: 100%;
+            height: 50%;
             border-radius: 15px;
             resize: none;
             border: 1px solid lightgray;
             margin: 0 10px;
+            line-height: 2.5em;
+            text-align: left;
         }
 
         textarea::placeholder {
             text-align: left;
-            line-height: 1em;
+            line-height: 2.5em;
+            padding-left: 1em;
         }
 
         button {
