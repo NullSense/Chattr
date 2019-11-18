@@ -3,7 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="313f6666-f402-439b-9b6b-9741d6a3acb2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/database.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/database.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/RegisterController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/RegisterController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ProfileController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ProfileController.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -162,7 +163,7 @@
       <option name="presentableId" value="Default" />
       <updated>1573918772660</updated>
       <workItem from="1573918773747" duration="38147000" />
-      <workItem from="1574000887441" duration="20328000" />
+      <workItem from="1574000887441" duration="22103000" />
     </task>
     <servers />
   </component>
