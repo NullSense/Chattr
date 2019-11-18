@@ -60,6 +60,8 @@
                     margin: 10px 0;
                     width: 100%;
                     .body {
+                        white-space: normal;
+                        word-wrap: break-word;
                         max-width: 200px;
                         border-radius: 15px;
                         padding: 12px;
