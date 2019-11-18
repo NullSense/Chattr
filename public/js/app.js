@@ -1864,7 +1864,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    startConversation: function startConversation(contact) {
+    getMessages: function getMessages(contact) {
       var _this = this;
 
       axios.get("/messages/".concat(contact.id)).then(function (response) {
@@ -1874,23 +1874,28 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error.response);
       });
     },
-    pushMessage: function pushMessage(message) {
+    sendMessage: function sendMessage(message) {
       this.messages.push(message);
+    },
+    getContacts: function getContacts() {
+      var _this2 = this;
+
+      axios.get('/contacts').then(function (response) {
+        _this2.contacts = response.data; // show the first conversation in the list
+
+        _this2.getMessages(_this2.contacts[0]);
+      })["catch"](function (error) {
+        console.log(error.response);
+      });
     }
   },
   mounted: function mounted() {
-    var _this2 = this;
+    var _this3 = this;
 
-    axios.get('/contacts').then(function (response) {
-      _this2.contacts = response.data; // show the first conversation in the list
-
-      _this2.startConversation(_this2.contacts[0]);
-    })["catch"](function (error) {
-      console.log(error.response);
-    }); // Poll the messages every 5s
+    this.getContacts(); // Poll the messages every 5s
 
     setInterval(function () {
-      _this2.startConversation(_this2.selectedContact);
+      _this3.getMessages(_this3.selectedContact);
     }, 5 * 1000);
   },
   components: {
@@ -1960,8 +1965,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ContactList",
   props: {
@@ -1973,14 +1976,14 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       // Select the first contact by default if not empty
-      selected: this.contacts.length ? this.contacts[0] : null
+      selectedContact: this.contacts.length ? this.contacts[0] : null
     };
   },
   methods: {
     // Sets the selected contact ID
     selectContact: function selectContact(contact) {
-      this.selected = contact;
-      this.$emit('selected', contact);
+      this.selectedContact = contact;
+      this.$emit('selectedContact', contact);
     }
   }
 });
@@ -2034,7 +2037,7 @@ __webpack_require__.r(__webpack_exports__);
         to: this.contact.id,
         body: body
       }).then(function (response) {
-        _this.$emit('new', response.data);
+        _this.$emit('sendMessage', response.data);
       })["catch"](function (error) {
         console.log(error.response);
       });
@@ -2072,17 +2075,15 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    send: function send(e) {
+    sendMessage: function sendMessage(e) {
       // resets cursor position
       e.preventDefault();
 
-      if (this.message == '') {
-        return;
+      if (this.message != '') {
+        this.$emit('sendMessage', this.message.trim()); // clear input
+
+        this.message = '';
       }
-
-      this.$emit('send', this.message.trim()); // clear input
-
-      this.message = '';
     }
   },
   name: "MessageComposer"
@@ -6602,7 +6603,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".chat[data-v-0d66c37a] {\n  display: -webkit-box;\n  display: flex;\n}", ""]);
+exports.push([module.i, ".chat[data-v-0d66c37a] {\n  display: -webkit-box;\n  display: flex;\n  border-radius: 15px;\n  background: -webkit-gradient(linear, left top, right top, from(#91EAE4), color-stop(#86A8E7), to(#7F7FD5));\n  background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);\n  overflow: hidden;\n}", ""]);
 
 // exports
 
@@ -6621,7 +6622,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".contact-bar[data-v-5ccf76fe] {\n  padding: 10px;\n  border: 1px solid #a6a6a6;\n  display: -webkit-box;\n  display: flex;\n}\n.contact-bar .name[data-v-5ccf76fe] {\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n          flex-direction: column;\n  -webkit-box-align: center;\n          align-items: center;\n  margin: auto;\n}\n.contact-bar .name h1[data-v-5ccf76fe] {\n  font-size: 25px;\n}\n.contact-bar .name h3[data-v-5ccf76fe] {\n  font-size: 15px;\n}\n.contact-bar .avatar[data-v-5ccf76fe] {\n  display: inline-block;\n}\n.contact-bar .avatar img[data-v-5ccf76fe] {\n  border-radius: 50%;\n  width: 100px;\n  height: 100px;\n}", ""]);
+exports.push([module.i, ".contact-bar[data-v-5ccf76fe] {\n  display: -webkit-box;\n  display: flex;\n  padding: 10px;\n}\n.contact-bar .avatar[data-v-5ccf76fe] {\n  display: inline-block;\n}\n.contact-bar .avatar img[data-v-5ccf76fe] {\n  border-radius: 50%;\n  width: 100px;\n  height: 100px;\n  border: 1.5px solid green;\n}\n.contact-bar .name[data-v-5ccf76fe] {\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n          flex-direction: column;\n  -webkit-box-align: center;\n          align-items: center;\n  margin: auto;\n}\n.contact-bar .name h1[data-v-5ccf76fe] {\n  font-size: 25px;\n}\n.contact-bar .name h3[data-v-5ccf76fe] {\n  font-size: 15px;\n}", ""]);
 
 // exports
 
@@ -6640,7 +6641,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".contact-list[data-v-0ee8d67a] {\n  -webkit-box-flex: 2;\n          flex: 2;\n  max-height: 100%;\n  height: 700px;\n  overflow-y: scroll;\n  border-left: 1px solid #a6a6a6;\n  border-bottom: 1px solid #a6a6a6;\n  border-top: 1px solid #a6a6a6;\n}\n.contact-list ul[data-v-0ee8d67a] {\n  list-style-type: none;\n  padding-left: 0;\n}\n.contact-list ul li[data-v-0ee8d67a] {\n  display: -webkit-box;\n  display: flex;\n  padding: 2px;\n  border-bottom: 1px solid #aaaaaa;\n  height: 80px;\n  position: relative;\n  cursor: pointer;\n}\n.contact-list ul li.selected[data-v-0ee8d67a] {\n  background: #dfdfdf;\n}\n.contact-list ul li span.unread[data-v-0ee8d67a] {\n  background: #82e0a8;\n  color: #fff;\n  position: absolute;\n  right: 11px;\n  top: 20px;\n  display: -webkit-box;\n  display: flex;\n  font-weight: 700;\n  min-width: 20px;\n  -webkit-box-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n          align-items: center;\n  line-height: 20px;\n  font-size: 12px;\n  padding: 0 4px;\n  border-radius: 3px;\n}\n.contact-list ul li .avatar[data-v-0ee8d67a] {\n  -webkit-box-flex: 1;\n          flex: 1;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n}\n.contact-list ul li .avatar img[data-v-0ee8d67a] {\n  width: 40px;\n  height: 40px;\n  border-radius: 50%;\n  margin: 0 auto;\n}\n.contact-list ul li .contact[data-v-0ee8d67a] {\n  -webkit-box-flex: 3;\n          flex: 3;\n  font-size: 10px;\n  overflow: hidden;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n          flex-direction: column;\n  -webkit-box-pack: center;\n          justify-content: center;\n}\n.contact-list ul li .contact p[data-v-0ee8d67a] {\n  margin: 0;\n}\n.contact-list ul li .contact p.name[data-v-0ee8d67a] {\n  font-weight: bold;\n}", ""]);
+exports.push([module.i, ".contact-list[data-v-0ee8d67a] {\n  -webkit-box-flex: 2;\n          flex: 2;\n  max-height: 100%;\n  height: 700px;\n  overflow-y: scroll;\n}\n.contact-list ul[data-v-0ee8d67a] {\n  list-style-type: none;\n  padding-left: 0;\n}\n.contact-list ul li[data-v-0ee8d67a] {\n  display: -webkit-box;\n  display: flex;\n  padding: 2px;\n  height: 80px;\n  position: relative;\n  cursor: pointer;\n}\n.contact-list ul li.selected-contact[data-v-0ee8d67a] {\n  background-color: #82ccdd;\n}\n.contact-list ul li .avatar[data-v-0ee8d67a] {\n  -webkit-box-flex: 1;\n          flex: 1;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-align: center;\n          align-items: center;\n  margin-left: 8px;\n}\n.contact-list ul li .avatar img[data-v-0ee8d67a] {\n  width: 40px;\n  height: 40px;\n  border-radius: 50%;\n  margin: 0 auto;\n  border: 1.5px solid green;\n}\n.contact-list ul li .contact[data-v-0ee8d67a] {\n  -webkit-box-flex: 3;\n          flex: 3;\n  font-size: 10px;\n  overflow: hidden;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n          flex-direction: column;\n  -webkit-box-pack: center;\n          justify-content: center;\n  margin-left: 16px;\n}\n.contact-list ul li .contact p[data-v-0ee8d67a] {\n  margin: 0;\n}\n.contact-list ul li .contact p.name[data-v-0ee8d67a] {\n  font-weight: bold;\n}", ""]);
 
 // exports
 
@@ -6659,7 +6660,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".conversation[data-v-63f956ee] {\n  -webkit-box-flex: 6;\n          flex: 6;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n          flex-direction: column;\n}", ""]);
+exports.push([module.i, ".conversation[data-v-63f956ee] {\n  -webkit-box-flex: 6;\n          flex: 6;\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n          flex-direction: column;\n  background-color: rgba(0, 0, 0, 0.3) !important;\n}", ""]);
 
 // exports
 
@@ -6678,7 +6679,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".message-composer[data-v-5a28bf2c] {\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-flex: 1;\n          flex: 1;\n  padding: 10px;\n  border: 1px solid #aaaaaa;\n  position: relative;\n  -webkit-box-align: center;\n          align-items: center;\n}\n.message-composer textarea[data-v-5a28bf2c] {\n  width: 100%;\n  height: 50%;\n  border-radius: 15px;\n  resize: none;\n  border: 1px solid lightgray;\n  margin: 0 10px;\n  line-height: 2.5em;\n  text-align: left;\n}\n.message-composer textarea[data-v-5a28bf2c]::-webkit-input-placeholder {\n  text-align: left;\n  line-height: 2.5em;\n  padding-left: 1em;\n}\n.message-composer textarea[data-v-5a28bf2c]::-moz-placeholder {\n  text-align: left;\n  line-height: 2.5em;\n  padding-left: 1em;\n}\n.message-composer textarea[data-v-5a28bf2c]:-ms-input-placeholder {\n  text-align: left;\n  line-height: 2.5em;\n  padding-left: 1em;\n}\n.message-composer textarea[data-v-5a28bf2c]::-ms-input-placeholder {\n  text-align: left;\n  line-height: 2.5em;\n  padding-left: 1em;\n}\n.message-composer textarea[data-v-5a28bf2c]::placeholder {\n  text-align: left;\n  line-height: 2.5em;\n  padding-left: 1em;\n}\n.message-composer button[data-v-5a28bf2c] {\n  border-radius: 15px;\n}", ""]);
+exports.push([module.i, ".message-composer[data-v-5a28bf2c] {\n  display: -webkit-box;\n  display: flex;\n  -webkit-box-flex: 1;\n          flex: 1;\n  padding: 10px;\n  position: relative;\n  -webkit-box-align: center;\n          align-items: center;\n}\n.message-composer textarea[data-v-5a28bf2c] {\n  background-color: rgba(0, 0, 0, 0.3) !important;\n  width: 100%;\n  height: 50%;\n  border-radius: 15px;\n  resize: none;\n  border: 1px solid lightgray;\n  margin: 0 10px;\n  line-height: 2.5em;\n  text-align: left;\n}\n.message-composer textarea[data-v-5a28bf2c]::-webkit-input-placeholder {\n  text-align: left;\n  line-height: 2.5em;\n  padding-left: 1em;\n}\n.message-composer textarea[data-v-5a28bf2c]::-moz-placeholder {\n  text-align: left;\n  line-height: 2.5em;\n  padding-left: 1em;\n}\n.message-composer textarea[data-v-5a28bf2c]:-ms-input-placeholder {\n  text-align: left;\n  line-height: 2.5em;\n  padding-left: 1em;\n}\n.message-composer textarea[data-v-5a28bf2c]::-ms-input-placeholder {\n  text-align: left;\n  line-height: 2.5em;\n  padding-left: 1em;\n}\n.message-composer textarea[data-v-5a28bf2c]::placeholder {\n  text-align: left;\n  line-height: 2.5em;\n  padding-left: 1em;\n}\n.message-composer button[data-v-5a28bf2c] {\n  background-color: rgba(0, 0, 0, 0.3) !important;\n  border-radius: 15px;\n  color: white !important;\n  cursor: pointer;\n}\n.message-composer button .button[data-v-5a28bf2c]:hover {\n  background-color: #3e8e41;\n}", ""]);
 
 // exports
 
@@ -6697,7 +6698,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".message-list[data-v-6a7499aa] {\n  background: #808080;\n  height: 100%;\n  max-height: 470px;\n  overflow-y: scroll;\n}\n.message-list ul[data-v-6a7499aa] {\n  list-style-type: none;\n  padding: 12px;\n}\n.message-list ul li.message[data-v-6a7499aa] {\n  margin: 10px 0;\n  width: 100%;\n}\n.message-list ul li.message .body[data-v-6a7499aa] {\n  white-space: normal;\n  word-wrap: break-word;\n  max-width: 200px;\n  border-radius: 15px;\n  padding: 12px;\n  display: inline-block;\n  font-size: 16px;\n}\n.message-list ul li.message .body .time[data-v-6a7499aa] {\n  font-size: 10px;\n  color: #5f5e64;\n}\n.message-list ul li.message.received[data-v-6a7499aa] {\n  text-align: left;\n}\n.message-list ul li.message.received .body[data-v-6a7499aa] {\n  background: #d5f0bf;\n}\n.message-list ul li.message.sent[data-v-6a7499aa] {\n  text-align: right;\n}\n.message-list ul li.message.sent .body[data-v-6a7499aa] {\n  background: #ffffff;\n}", ""]);
+exports.push([module.i, ".message-list[data-v-6a7499aa] {\n  height: 100%;\n  max-height: 470px;\n  overflow-y: scroll;\n}\n.message-list ul[data-v-6a7499aa] {\n  list-style-type: none;\n  padding: 12px;\n}\n.message-list ul li.message[data-v-6a7499aa] {\n  margin: 10px 0;\n  width: 100%;\n}\n.message-list ul li.message .body[data-v-6a7499aa] {\n  white-space: normal;\n  word-wrap: break-word;\n  max-width: 200px;\n  border-radius: 15px;\n  padding: 12px;\n  display: inline-block;\n  font-size: 16px;\n}\n.message-list ul li.message .body .time[data-v-6a7499aa] {\n  font-size: 10px;\n  color: #5f5e64;\n}\n.message-list ul li.message.received[data-v-6a7499aa] {\n  text-align: left;\n}\n.message-list ul li.message.received .body[data-v-6a7499aa] {\n  background: #82ccdd;\n}\n.message-list ul li.message.sent[data-v-6a7499aa] {\n  text-align: right;\n}\n.message-list ul li.message.sent .body[data-v-6a7499aa] {\n  background: #78e08f;\n}", ""]);
 
 // exports
 
@@ -38347,12 +38348,12 @@ var render = function() {
     [
       _c("ContactList", {
         attrs: { contacts: _vm.contacts },
-        on: { selected: _vm.startConversation }
+        on: { selectedContact: _vm.getMessages }
       }),
       _vm._v(" "),
       _c("Conversation", {
         attrs: { contact: _vm.selectedContact, messages: _vm.messages },
-        on: { new: _vm.pushMessage }
+        on: { sendMessage: _vm.sendMessage }
       })
     ],
     1
@@ -38433,7 +38434,7 @@ var render = function() {
           "li",
           {
             key: contact.id,
-            class: { selected: contact == _vm.selected },
+            class: { "selected-contact": contact == _vm.selectedContact },
             on: {
               click: function($event) {
                 return _vm.selectContact(contact)
@@ -38443,7 +38444,12 @@ var render = function() {
           [
             _c("div", { staticClass: "avatar" }, [
               _c("img", {
-                attrs: { src: contact.avatar, alt: "Contact avatar" }
+                attrs: {
+                  src: contact
+                    ? contact.avatar
+                    : "https://via.placeholder.com/100",
+                  alt: "avatar"
+                }
               })
             ]),
             _vm._v(" "),
@@ -38491,7 +38497,7 @@ var render = function() {
         attrs: { contact: _vm.contact, messages: _vm.messages }
       }),
       _vm._v(" "),
-      _c("MessageComposer", { on: { send: _vm.sendMessage } })
+      _c("MessageComposer", { on: { sendMessage: _vm.sendMessage } })
     ],
     1
   )
@@ -38538,7 +38544,7 @@ var render = function() {
           ) {
             return null
           }
-          return _vm.send($event)
+          return _vm.sendMessage($event)
         },
         input: function($event) {
           if ($event.target.composing) {
@@ -38551,7 +38557,10 @@ var render = function() {
     _vm._v(" "),
     _c(
       "button",
-      { staticClass: "btn btn-outline-secondary", on: { click: _vm.send } },
+      {
+        staticClass: "btn btn-outline-secondary",
+        on: { click: _vm.sendMessage }
+      },
       [_vm._v("Send")]
     )
   ])

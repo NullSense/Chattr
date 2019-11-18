@@ -2,7 +2,7 @@
     <div class="conversation">
         <ContactBar :contact="contact"/>
         <MessageList :contact="contact" :messages="messages"/>
-        <MessageComposer @send="sendMessage"/>
+        <MessageComposer @sendMessage="sendMessage"/>
     </div>
 </template>
 
@@ -33,7 +33,7 @@
                     to: this.contact.id,
                     body: body
                 }).then((response) => {
-                    this.$emit('new', response.data)
+                    this.$emit('sendMessage', response.data)
                 }).catch(error => {
                     console.log(error.response)
                 })
@@ -48,6 +48,7 @@
         flex: 6;
         display: flex;
         flex-direction: column;
+        background-color: rgba(0,0,0,0.3) !important;
     }
 </style>
 

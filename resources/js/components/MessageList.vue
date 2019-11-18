@@ -14,6 +14,7 @@
 
 <script>
     Vue.use(require('vue-moment'));
+
     export default {
         props: {
             contact: {
@@ -46,7 +47,6 @@
 
 <style lang="scss" scoped>
     .message-list {
-        background: #808080;
         height: 100%;
         max-height: 470px;
         overflow-y: scroll;
@@ -75,13 +75,13 @@
                     &.received {
                         text-align: left;
                         .body {
-                            background: #d5f0bf;
+                            background: #82ccdd;
                         }
                     }
                     &.sent {
                         text-align: right;
                         .body {
-                            background: #ffffff;
+                            background: #78e08f;
                         }
                     }
                 }

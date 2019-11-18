@@ -1,7 +1,7 @@
 <template>
     <div class="message-composer">
-        <textarea v-model="message" @keypress.enter="send" placeholder="Type a message"></textarea>
-        <button v-on:click="send" class="btn btn-outline-secondary">Send</button>
+        <textarea v-model="message" @keypress.enter="sendMessage" placeholder="Type a message"></textarea>
+        <button v-on:click="sendMessage" class="btn btn-outline-secondary">Send</button>
     </div>
 </template>
 
@@ -13,17 +13,15 @@
             };
         },
         methods: {
-            send(e) {
+            sendMessage(e) {
                 // resets cursor position
                 e.preventDefault();
 
-                if (this.message == '') {
-                    return;
+                if (this.message != '') {
+                    this.$emit('sendMessage', this.message.trim());
+                    // clear input
+                    this.message = '';
                 }
-
-                this.$emit('send', this.message.trim());
-                // clear input
-                this.message = '';
             }
         },
         name: "MessageComposer"
@@ -35,11 +33,11 @@
         display: flex;
         flex: 1;
         padding: 10px;
-        border: 1px solid #aaaaaa;
         position: relative;
         align-items: center;
 
         textarea {
+            background-color: rgba(0, 0, 0, 0.3) !important;
             width: 100%;
             height: 50%;
             border-radius: 15px;
@@ -57,7 +55,14 @@
         }
 
         button {
+            background-color: rgba(0, 0, 0, 0.3) !important;
             border-radius: 15px;
+            color: white !important;
+            cursor: pointer;
+
+            .button:hover {
+                background-color: #3e8e41
+            }
         }
     }
 </style>

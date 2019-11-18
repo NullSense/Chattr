@@ -1,7 +1,7 @@
 <template>
     <div class="chat">
-        <ContactList :contacts="contacts" @selected="startConversation"/>
-        <Conversation :contact="selectedContact" :messages="messages" @new="pushMessage"/>
+        <ContactList :contacts="contacts" @selectedContact="getMessages"/>
+        <Conversation :contact="selectedContact" :messages="messages" @sendMessage="sendMessage"/>
     </div>
 </template>
 
@@ -24,7 +24,7 @@
             };
         },
         methods: {
-            startConversation(contact) {
+            getMessages(contact) {
                 axios.get(`/messages/${contact.id}`)
                     .then((response) => {
                         this.messages = response.data;
@@ -33,22 +33,25 @@
                     console.log(error.response)
                 });
             },
-            pushMessage(message) {
+            sendMessage(message) {
                 this.messages.push(message);
             },
+            getContacts() {
+                axios.get('/contacts')
+                    .then((response) => {
+                        this.contacts = response.data;
+                        // show the first conversation in the list
+                        this.getMessages(this.contacts[0]);
+                    }).catch(error => {
+                    console.log(error.response)
+                });
+            }
         },
         mounted() {
-            axios.get('/contacts')
-                .then((response) => {
-                    this.contacts = response.data;
-                    // show the first conversation in the list
-                    this.startConversation(this.contacts[0]);
-                }).catch(error => {
-                console.log(error.response)
-            });
+            this.getContacts();
             // Poll the messages every 5s
             setInterval(() => {
-                this.startConversation(this.selectedContact)
+                this.getMessages(this.selectedContact)
             }, 5*1000);
         },
         components: {Conversation, ContactList}
@@ -58,5 +61,9 @@
 <style lang="scss" scoped>
     .chat {
         display: flex;
+        border-radius: 15px;
+        background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+        background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+        overflow:hidden;
     }
 </style>

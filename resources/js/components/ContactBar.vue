@@ -24,10 +24,19 @@
 
 <style lang="scss" scoped>
     .contact-bar {
-        padding: 10px;
-        border: 1px solid #a6a6a6;
-
         display: flex;
+        padding: 10px;
+
+        .avatar {
+            display:inline-block;
+
+            img {
+                border-radius: 50%;
+                width: 100px;
+                height: 100px;
+                border:1.5px solid green;
+            }
+        }
         .name {
             flex-direction: column;
             align-items: center;
@@ -38,15 +47,6 @@
             }
             h3 {
                 font-size: 15px;
-            }
-        }
-        .avatar {
-            display:inline-block;
-
-            img {
-                border-radius: 50%;
-                width: 100px;
-                height: 100px;
             }
         }
     }

@@ -1,12 +1,10 @@
-Vue.use(require('vue-moment'));
-
 <template>
     <div class="contact-list">
         <ul>
             <li v-for="contact in contacts" :key="contact.id" @click="selectContact(contact)"
-                :class="{ 'selected': contact == selected}">
+                :class="{ 'selected-contact': contact == selectedContact}">
                 <div class="avatar">
-                    <img :src="contact.avatar" alt="Contact avatar">
+                    <img :src="contact ? contact.avatar : 'https://via.placeholder.com/100'" alt="avatar">
                 </div>
                 <div class="contact">
                     <p class="name">{{ contact.name }}</p>
@@ -29,16 +27,16 @@ Vue.use(require('vue-moment'));
         data() {
             return {
                 // Select the first contact by default if not empty
-                selected: this.contacts.length ? this.contacts[0] : null
+                selectedContact: this.contacts.length ? this.contacts[0] : null
             };
         },
         methods: {
             // Sets the selected contact ID
             selectContact(contact) {
-                this.selected = contact;
-                this.$emit('selected', contact);
+                this.selectedContact = contact;
+                this.$emit('selectedContact', contact);
             }
-        }
+        },
     }
 </script>
 
@@ -48,9 +46,6 @@ Vue.use(require('vue-moment'));
         max-height: 100%;
         height: 700px;
         overflow-y: scroll;
-        border-left: 1px solid #a6a6a6;
-        border-bottom: 1px solid #a6a6a6;
-        border-top: 1px solid #a6a6a6;
 
         ul {
             list-style-type: none;
@@ -59,42 +54,27 @@ Vue.use(require('vue-moment'));
             li {
                 display: flex;
                 padding: 2px;
-                border-bottom: 1px solid #aaaaaa;
                 height: 80px;
                 position: relative;
                 cursor: pointer;
 
-                &.selected {
-                    background: #dfdfdf;
-                }
+                &.selected-contact {
+                    background-color: #82ccdd;
 
-                span.unread {
-                    background: #82e0a8;
-                    color: #fff;
-                    position: absolute;
-                    right: 11px;
-                    top: 20px;
-                    display: flex;
-                    font-weight: 700;
-                    min-width: 20px;
-                    justify-content: center;
-                    align-items: center;
-                    line-height: 20px;
-                    font-size: 12px;
-                    padding: 0 4px;
-                    border-radius: 3px;
                 }
 
                 .avatar {
                     flex: 1;
                     display: flex;
                     align-items: center;
+                    margin-left: 8px;
 
                     img {
                         width: 40px;
                         height: 40px;
                         border-radius: 50%;
                         margin: 0 auto;
+                        border:1.5px solid green;
                     }
                 }
 
@@ -105,6 +85,7 @@ Vue.use(require('vue-moment'));
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
+                    margin-left: 16px;
 
                     p {
                         margin: 0;
