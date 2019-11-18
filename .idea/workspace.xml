@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="313f6666-f402-439b-9b6b-9741d6a3acb2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Chatrr.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Chatrr.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -163,7 +161,7 @@
       <option name="presentableId" value="Default" />
       <updated>1573918772660</updated>
       <workItem from="1573918773747" duration="38147000" />
-      <workItem from="1574000887441" duration="16761000" />
+      <workItem from="1574000887441" duration="17299000" />
     </task>
     <servers />
   </component>
